@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/layout::head"></head>
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.css">
+
+<script type="text/javascript" src="/js/listaDeseos.js"></script>
+
+<body>
+
+	<header th:replace="layout/layout::header"></header>
+
+	<!-- filtros -->
+	<div class="pt-2">
+		<form name="formGetLibrosFromGoogleBooks" th:action="@{/listaDeseo/formListaDeseo}" method="post">
+			<h3 class="bg-dark text-light">Filtrar clase de libros</h3>
+			<ul>
+				<li><input type="radio" name="filtro" value="1" /> Por Autor</li>
+				<li><input type="radio" name="filtro" value="2" /> Por Título</li>
+				<li><input type="radio" name="filtro" value="3" /> Por Publisher </li>
+				<br/>
+				
+				<p>
+					<div>
+						<label class="bg-dark text-light">Texto Selección</label>
+					</div>
+					<div>
+						<input type="text" id="selectFiltro" name="selectFiltro"
+						style="width: 500px;" /> &nbsp; <input class="btn btn-primary"
+						type="button" value="Filtrar" onclick="getFiltroLibros()" />&nbsp; <span id="espera"></span>
+						
+						<span>
+							<input type="submit" value="Agregar libros seleccionados a la lista de deseos" />
+						</span>
+						
+						<span th:text="${listaDeseo.nombre}"></span>
+					</div>
+				</p>
+			
+				
+			</ul>	
+			
+			
+		</form>
+		
+	</div>
+
+	<div class="container py-4">
+
+		<!--  muestra todas los libros desde Google Books -->
+
+
+		<table class="table table-bordered table-striped my-4 "  id="datatable" data-page-length="20" >
+			<thead class="thead-inverse">
+				<tr>
+					<th class="bg-dark text-light" colspan="6">LISTA DE LIBROS
+						DESDE GOOGLE BOOKS</th>
+				</tr>
+				<tr class="text text-center">
+					<th>info</th>
+					<th>título</th>
+					<th>autor</th>
+					<th>publisher</th>
+					<th>isbn</th>
+					<th class="text text-center">selección</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="libro: ${librosDesdeGoogle}">
+					
+					<td><a class="btn btn-secondary" th:href="@{/listaDeseo/verInfoLibro/}+${libro.title}" th:text="'Info'"></a></td>
+					
+					<td class="text text-center" th:text="${libro.title}"></td>
+					<td th:text="${libro.authors}"></td>
+					<td th:text="${libro.publisher}"></td>
+					<td th:text="${libro.isbn}"></td>
+
+					<td class="text-center" >
+						<input type="checkbox" name="seleccionLibros" />
+					</td>
+					
+				</tr>
+			</tbody>
+		</table>
+
+	</div>
+
+	<footer th:replace="layout/layout::footer"></footer>
+
+	<!-- Archivos js de Bootstrap 4 -->
+        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+        <script src="/bootstrap-cheatsheet/node_modules/popper.js/dist/umd/popper.min.js"></script>
+        <script src="../js/bootstrap.min.js"></script>
+
+		
+		<script type="text/javascript" charset="utf8" 
+		src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.js"></script>
+
+	<script type="text/javascript" src="jquery.dataTables.js"></script>
+	
+	<script type="text/javascript">
+	    $('#datatable').DataTable( {
+		    language: {
+			    "sProcessing":     "Procesando...",
+                "sLengthMenu":     "Mostrar _MENU_ registros",
+                "sZeroRecords":    "No se encontraron resultados",
+                "sEmptyTable":     "Ningún dato disponible en esta tabla =(",
+                "sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
+                "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
+                "sInfoPostFix":    "",
+                "sSearch":         "Buscar:",
+                "sUrl":            "",
+                "sInfoThousands":  ",",
+                "sLoadingRecords": "Cargando...",
+                "oPaginate": {
+                    "sFirst":    "Primero",
+                    "sLast":     "Último",
+                    "sNext":     "Siguiente",
+                    "sPrevious": "Anterior"
+                },
+                "oAria": {
+                    "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
+                    "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                },
+                "buttons": {
+                    "copy": "Copiar",
+                    "colvis": "Visibilidad"
+                }
+			}
+		} );
+	</script>
+
+
+
+</body>
+</html>
